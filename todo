@@ -1,7 +1,14 @@
 #UI/UX Sprint
 
-# Screens setup 12/12/23 17:43 - 12/12/23 17:48
-# Navigations
+# Screens setup 
+# 12/12/23 17:43 - 12/12/23 17:48
+
+# Navigations setup  
+# 12/12/23 17:50 - 12/12/23 18:32
+# // ERROR Error: A navigator can only contain 'Screen', 'Group' or 'React.Fragment' as its direct children (found ';'). To render this component in the navigator, pass it in the 'component' prop to 'Screen'.
+# // Just kept on reloading and deleted code and pasted again
+# // Changed the navigater from stackNavigator to MainStackNavigator
+
 # Icons setup
 # Font sizes setup
 # Home screen
