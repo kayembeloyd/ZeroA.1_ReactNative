@@ -2,11 +2,17 @@ import React from "react";
 import { Button } from "react-native";
 import { Text, View } from "react-native";
 import Icons from "../assets/icons/Icons";
+import CustomText from "../components/CustomText";
 
 export default function HomeScreen({ navigation }) {
   return (
     <View>
-      <Text>Home Screen</Text>
+      <View style={{ paddingVertical: 20 }}>
+        <CustomText>Default Text size</CustomText>
+        <CustomText style={{ fontSize: 30 }}>Font size 40</CustomText>
+        <CustomText style={{ fontSize: 40 }}>Font size 40</CustomText>
+        <CustomText style={{ fontSize: 50 }}>Font size 40</CustomText>
+      </View>
       <Icons name="ic_backspace" />
       <Button
         title="Go to Filters Screen"
