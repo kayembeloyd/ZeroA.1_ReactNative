@@ -9,6 +9,8 @@ import FilterRow from "../components/FilterRow";
 import Icons from "../assets/icons/Icons";
 import House from "../components/House";
 import { FlatList } from "react-native";
+import CustomDialog from "../components/CustomDialog";
+import KeypadDialogContent from "../components/KeypadDialogContent";
 
 export default function HomeScreen({ navigation }) {
   const houses = [
@@ -134,6 +136,8 @@ export default function HomeScreen({ navigation }) {
   return (
     <View>
       <StatusBar backgroundColor={CustomColor.Primary} />
+
+      <CustomDialog visible={true} contentComponent={<KeypadDialogContent />} />
 
       <FlatList
         data={houses}

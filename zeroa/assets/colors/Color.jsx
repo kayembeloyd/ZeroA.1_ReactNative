@@ -5,4 +5,6 @@ export const CustomColor = {
   OnPrimaryContainer: "#21005D",
   Secondary: "#625B71",
   OnSecondary: "#FFFFFF",
+  SecondaryContainer: "#E8DEF8",
+  OnSecondaryContainer: "#1D192B",
 };
