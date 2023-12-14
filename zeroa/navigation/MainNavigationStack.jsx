@@ -10,7 +10,7 @@ const MainStackNavigator = createNativeStackNavigator();
 
 export default function MainNavigationStack() {
   return (
-    <MainStackNavigator.Navigator>
+    <MainStackNavigator.Navigator screenOptions={{ headerShown: false }}>
       <MainStackNavigator.Screen name="homeScreen" component={HomeScreen} />
       <MainStackNavigator.Screen
         name="filtersScreen"

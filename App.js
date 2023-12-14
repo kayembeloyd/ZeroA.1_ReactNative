@@ -7,6 +7,8 @@ export default function App() {
   const [fontsLoaded] = useFonts({
     InterRegular: require("./zeroa/assets/fonts/inter/InterRegular.otf"),
     InterBold: require("./zeroa/assets/fonts/inter/InterBold.otf"),
+    InterSemi: require("./zeroa/assets/fonts/inter/InterSemi.otf"),
+    InterMedium: require("./zeroa/assets/fonts/inter/InterMedium.otf"),
   });
 
   if (!fontsLoaded) return null;

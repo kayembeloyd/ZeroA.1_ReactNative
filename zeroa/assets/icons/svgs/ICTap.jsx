@@ -1,7 +1,7 @@
 import * as React from "react";
 import Svg, { G, Path, Defs, ClipPath } from "react-native-svg";
 const ICTap = () => (
-  <Svg xmlns="http://www.w3.org/2000/svg" width={24} height={24} fill="none">
+  <Svg xmlns="http://www.w3.org/2000/svg" width={14} height={14} fill="none">
     <G clipPath="url(#a)">
       <Path
         fill="#21005D"

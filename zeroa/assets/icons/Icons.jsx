@@ -17,6 +17,7 @@ import ICSavedLocal from "./svgs/ICSavedLocal";
 import ICShare from "./svgs/ICShare";
 import ICTap from "./svgs/ICTap";
 import ICView from "./svgs/ICView";
+import ICIconError from "./svgs/ICIconError";
 
 const Svgs = {
   ic_add: (color) => <ICAdd color={color} />,
@@ -37,6 +38,7 @@ const Svgs = {
   ic_share: (color) => <ICShare color={color} />,
   ic_tap: (color) => <ICTap color={color} />,
   ic_view: (color) => <ICView color={color} />,
+  ic_icon_error: (color) => <ICIconError color={color} />,
 };
 
 export default function Icons({ name, color, style }) {
