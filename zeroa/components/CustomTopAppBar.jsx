@@ -47,7 +47,7 @@ export default function CustomTopAppBar({
           fontSize: 18,
           color: CustomColor.OnPrimary,
           flex: 1,
-          marginLeft: leadingOptions ? 0 : 10,
+          marginLeft: leadingOptions ? 16 : 10,
         }}
       >
         {title}

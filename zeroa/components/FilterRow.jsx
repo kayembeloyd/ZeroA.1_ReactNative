@@ -44,6 +44,7 @@ export default function FilterRow({ filterTitle, filterChips }) {
               text={filterChip.text}
               uneditableText={filterChip.uneditableText}
               icons={filterChip.icons}
+              onPress={filterChip.onPress ? filterChip.onPress : () => {}}
             />
           );
         })}

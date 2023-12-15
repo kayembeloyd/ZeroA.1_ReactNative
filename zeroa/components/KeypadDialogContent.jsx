@@ -3,8 +3,9 @@ import { Text, View } from "react-native";
 import { CustomColor } from "../assets/colors/Color";
 import Icons from "../assets/icons/Icons";
 import CustomButton from "./CustomButton";
+import { TouchableOpacity } from "react-native";
 
-export default function KeypadDialogContent() {
+export default function KeypadDialogContent({ onDonePress }) {
   const numKeyRows = [
     [
       {
@@ -135,7 +136,7 @@ export default function KeypadDialogContent() {
               >
                 {row.map((numKey, numKeyIndex) => {
                   return (
-                    <View
+                    <TouchableOpacity
                       key={numKeyIndex}
                       style={{
                         width: 88,
@@ -162,7 +163,7 @@ export default function KeypadDialogContent() {
                           {numKey.id}
                         </Text>
                       )}
-                    </View>
+                    </TouchableOpacity>
                   );
                 })}
               </View>
@@ -190,7 +191,11 @@ export default function KeypadDialogContent() {
             title={"Cancel"}
             titleColor={"#555358"}
           />
-          <CustomButton style={{ borderWidth: 0 }} title={"Done"} />
+          <CustomButton
+            style={{ borderWidth: 0 }}
+            title={"Done"}
+            onPress={onDonePress}
+          />
         </View>
       </View>
     </View>

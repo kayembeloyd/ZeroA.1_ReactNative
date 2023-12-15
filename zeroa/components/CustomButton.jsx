@@ -1,7 +1,8 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import Icons from "../assets/icons/Icons";
 import { CustomColor } from "../assets/colors/Color";
+import { Pressable } from "react-native";
 
 export default function CustomButton({
   title,
@@ -9,9 +10,10 @@ export default function CustomButton({
   endIconName,
   startIconName,
   style,
+  onPress,
 }) {
   return (
-    <View // Button Container
+    <TouchableOpacity // Button Container
       style={[
         {
           paddingHorizontal: 24,
@@ -26,6 +28,7 @@ export default function CustomButton({
         },
         style,
       ]}
+      onPress={onPress}
     >
       {startIconName ? (
         <Icons name={startIconName} color={titleColor ? titleColor : "#000"} />
@@ -44,6 +47,6 @@ export default function CustomButton({
       {endIconName ? (
         <Icons name={endIconName} color={titleColor ? titleColor : "#000"} />
       ) : null}
-    </View>
+    </TouchableOpacity>
   );
 }

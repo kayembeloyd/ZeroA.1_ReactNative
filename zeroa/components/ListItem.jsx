@@ -1,9 +1,6 @@
 import React from "react";
 import { Text, View } from "react-native";
-import { CustomColor } from "../assets/colors/Color";
-import CustomText from "./CustomText";
 import Icons from "../assets/icons/Icons";
-import CustomButton from "./CustomButton";
 
 export default function ListItem({
   title,
@@ -33,7 +30,7 @@ export default function ListItem({
           color: color ? color : "#000",
         }}
       >
-        Filters
+        {title}
       </Text>
 
       {endIconName ? (

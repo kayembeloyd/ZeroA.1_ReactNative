@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StatusBar, Text } from "react-native";
 import { View } from "react-native";
 import CustomTopAppBar from "../components/CustomTopAppBar";
@@ -27,16 +27,8 @@ export default function HomeScreen({ navigation }) {
     { id: 10 },
   ];
 
-  const DATA = [
-    {
-      title: "Header",
-      data: ["Pizza"],
-    },
-    {
-      title: "Houses",
-      data: ["French Fries"],
-    },
-  ];
+  const [budgetInputDialogVisibility, setBudgetInputDialogVisibility] =
+    useState(false);
 
   const ListHeaderComponent = () => {
     return (
@@ -55,15 +47,29 @@ export default function HomeScreen({ navigation }) {
           }}
         >
           <ListItem
+            title={"Filters"}
             color={CustomColor.OnPrimaryContainer}
-            endButton={<CustomButton endIconName={"ic_share"} />}
+            endButton={
+              <CustomButton
+                title={"More filters"}
+                onPress={() => {
+                  navigation.navigate("filtersScreen");
+                }}
+              />
+            }
             style={{}}
           />
 
           <FilterRow
             filterTitle={"Monthly rent"}
             filterChips={[
-              { uneditableText: "From", text: "15k" },
+              {
+                uneditableText: "From",
+                text: "15k",
+                onPress: () => {
+                  setBudgetInputDialogVisibility(true);
+                },
+              },
               { uneditableText: "To", text: "20k" },
               {
                 uneditableText: "Exact price",
@@ -137,7 +143,16 @@ export default function HomeScreen({ navigation }) {
     <View>
       <StatusBar backgroundColor={CustomColor.Primary} />
 
-      <CustomDialog visible={true} contentComponent={<KeypadDialogContent />} />
+      <CustomDialog
+        visible={budgetInputDialogVisibility}
+        contentComponent={
+          <KeypadDialogContent
+            onDonePress={() => {
+              setBudgetInputDialogVisibility(false);
+            }}
+          />
+        }
+      />
 
       <FlatList
         data={houses}

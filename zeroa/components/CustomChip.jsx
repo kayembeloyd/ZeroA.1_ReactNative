@@ -1,11 +1,17 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import Icons from "../assets/icons/Icons";
 import { CustomColor } from "../assets/colors/Color";
 
-export default function CustomChip({ style, uneditableText, text, icons }) {
+export default function CustomChip({
+  style,
+  uneditableText,
+  text,
+  icons,
+  onPress,
+}) {
   return (
-    <View // Chip container
+    <TouchableOpacity // Chip container
       style={[
         style,
         {
@@ -21,6 +27,7 @@ export default function CustomChip({ style, uneditableText, text, icons }) {
           minHeight: 32,
         },
       ]}
+      onPress={onPress}
     >
       {uneditableText ? (
         <Text
@@ -55,6 +62,6 @@ export default function CustomChip({ style, uneditableText, text, icons }) {
           />
         );
       })}
-    </View>
+    </TouchableOpacity>
   );
 }
