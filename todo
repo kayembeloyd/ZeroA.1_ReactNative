@@ -1,55 +1,73 @@
 #UI/UX Sprint
 
-# Screens setup
+{ # Screens setup
 
-# 12/12/23 17:43 - 12/12/23 17:48
+    # 12/12/23 17:43 - 12/12/23 17:48
 
-# Navigations setup
+}
 
-# 12/12/23 17:50 - 12/12/23 18:32
+{ # Navigations setup
 
-# // ERROR Error: A navigator can only contain 'Screen', 'Group' or 'React.Fragment' as its direct children (found ';'). To render this component in the navigator, pass it in the 'component' prop to 'Screen'.
+    # 12/12/23 17:50 - 12/12/23 18:32
 
-# // Just kept on reloading and deleted code and pasted again
+    # // ERROR Error: A navigator can only contain 'Screen', 'Group' or 'React.Fragment' as its direct children (found ';'). To render this component in the navigator, pass it in the 'component' prop to 'Screen'.
 
-# // Changed the navigater from stackNavigator to MainStackNavigator
+    # // Just kept on reloading and deleted code and pasted again
 
-# Icons setup
+    # // Changed the navigater from stackNavigator to MainStackNavigator
 
-# 12/12/23 18:47 - 12/12/23 20:09
+}
 
-# Font sizes setup
+{ # Icons setup
 
-# 12/12/23 21:52 - slept
+    # 12/12/23 18:47 - 12/12/23 20:09
 
-# 13/12/23 03:10 - 3:57
+}
 
-# # update font family
+{ # Font sizes setup
 
-# Home screen
+    # 12/12/23 21:52 - slept
 
-# 13/12/23 06:20 - 13/12/23 07:03
+    # 13/12/23 03:10 - 3:57
 
-# 13/12/23 20:12 - Slept
+    # # update font family
 
-# 14/12/23 02:24 - 14/12/23 05:07
+}
 
-# 14/12/23 06:30 - 14/12/23 07:00
+{ # Home screen
 
-# 14/12/23 17:51 - 14/12/23 18:19
+    # 13/12/23 06:20 - 13/12/23 07:03
 
-# Basic dialog
+    # 13/12/23 20:12 - Slept
 
-# 14/12/23 18:28 - 14/12/23 20:18
+    # 14/12/23 02:24 - 14/12/23 05:07
 
-# Filters screen
+    # 14/12/23 06:30 - 14/12/23 07:00
 
-# 15/12/23 06:43 - 15/12/23 07:00
+    # 14/12/23 17:51 - 14/12/23 18:19
 
-# 15/12/23 17:43 - 15/12/23 18:04
+}
 
-# House screen
+{ # Basic dialog
 
-# Location screen
+    # 14/12/23 18:28 - 14/12/23 20:18
 
-# Saved screen
+}
+
+{ # Filters screen
+
+    # 15/12/23 06:43 - 15/12/23 07:00
+
+    # 15/12/23 17:43 - 15/12/23 18:04
+
+}
+
+{# House screen
+
+    # 15/12/23 18:07 - 15/12/23 19:05
+
+}
+
+{# Location screen}
+
+{# Saved screen}

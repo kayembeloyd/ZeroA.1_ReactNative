@@ -52,7 +52,7 @@ export default function Icons({ name, color, style }) {
         },
       ]}
     >
-      {Svgs[name](color)}
+      {Svgs[name] ? Svgs[name](color) : Svgs["ic_icon_error"](color)}
     </View>
   );
 }

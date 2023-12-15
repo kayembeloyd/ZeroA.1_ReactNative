@@ -162,7 +162,14 @@ export default function HomeScreen({ navigation }) {
         stickyHeaderIndices={[1]}
         renderItem={({ item }) => {
           if (item.type) return <HouseTitleBar />;
-          else return <House />;
+          else
+            return (
+              <House
+                onPress={() => {
+                  navigation.navigate("houseScreen");
+                }}
+              />
+            );
         }}
       />
     </View>

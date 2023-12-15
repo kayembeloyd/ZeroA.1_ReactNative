@@ -4,12 +4,13 @@ import { CustomColor } from "../assets/colors/Color";
 import Icons from "../assets/icons/Icons";
 import { Image } from "react-native";
 import { Dimensions } from "react-native";
+import { TouchableOpacity } from "react-native";
 
-export default function House() {
+export default function House({ onPress }) {
   const { width } = Dimensions.get("window");
 
   return (
-    <View // House Container
+    <TouchableOpacity // House Container
       style={{
         padding: 8,
         borderRadius: 12,
@@ -18,6 +19,7 @@ export default function House() {
         marginHorizontal: 16,
         marginVertical: 5,
       }}
+      onPress={onPress}
     >
       <View // Location container
         style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
@@ -106,6 +108,6 @@ export default function House() {
       </View>
 
       <Text style={{ fontFamily: "InterRegular", fontSize: 15 }}>More...</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
