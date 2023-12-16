@@ -36,6 +36,7 @@ export default function CustomTopAppBar({
               style={{ height: 48, width: 48 }}
               name={option.name ? option.name : "ic_icon_error"}
               color={CustomColor.OnPrimary}
+              onPress={option.onPress}
             />
           );
         })}
@@ -63,6 +64,7 @@ export default function CustomTopAppBar({
               style={{ height: 48, width: 48 }}
               name={option.name ? option.name : "ic_icon_error"}
               color={CustomColor.OnPrimary}
+              onPress={option.onPress}
             />
           );
         })}

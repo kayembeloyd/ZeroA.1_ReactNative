@@ -18,6 +18,7 @@ import ICShare from "./svgs/ICShare";
 import ICTap from "./svgs/ICTap";
 import ICView from "./svgs/ICView";
 import ICIconError from "./svgs/ICIconError";
+import { TouchableOpacity } from "react-native";
 
 const Svgs = {
   ic_add: (color) => <ICAdd color={color} />,
@@ -41,9 +42,9 @@ const Svgs = {
   ic_icon_error: (color) => <ICIconError color={color} />,
 };
 
-export default function Icons({ name, color, style }) {
+export default function Icons({ name, color, style, onPress }) {
   return (
-    <View
+    <TouchableOpacity
       style={[
         style ? style : null,
         {
@@ -51,8 +52,10 @@ export default function Icons({ name, color, style }) {
           alignItems: "center",
         },
       ]}
+      onPress={onPress}
+      disabled={!onPress}
     >
       {Svgs[name] ? Svgs[name](color) : Svgs["ic_icon_error"](color)}
-    </View>
+    </TouchableOpacity>
   );
 }

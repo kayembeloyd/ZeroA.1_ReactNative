@@ -36,7 +36,13 @@ export default function HomeScreen({ navigation }) {
         <CustomTopAppBar
           title={"ZeroA"}
           trailingOptions={[
-            { name: "ic_saved_local", color: CustomColor.OnPrimary },
+            {
+              name: "ic_saved_local",
+              color: CustomColor.OnPrimary,
+              onPress: () => {
+                navigation.navigate("savedScreen");
+              },
+            },
           ]}
         />
 
