@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 import Icons from "../assets/icons/Icons";
+import { TouchableOpacity } from "react-native";
 
 export default function ListItem({
   title,
@@ -8,9 +9,11 @@ export default function ListItem({
   style,
   endIconName,
   endButton,
+  pressable,
 }) {
   return (
-    <View // List itemContainer
+    <TouchableOpacity // List itemContainer
+      disabled={!pressable}
       style={[
         style,
         {
@@ -38,6 +41,6 @@ export default function ListItem({
       ) : null}
 
       {endButton ? endButton : null}
-    </View>
+    </TouchableOpacity>
   );
 }

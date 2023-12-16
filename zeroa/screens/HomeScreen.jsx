@@ -85,6 +85,9 @@ export default function HomeScreen({ navigation }) {
               {
                 uneditableText: "Lilongwe Area 23",
                 icons: [{ name: "ic_location" }],
+                onPress: () => {
+                  navigation.navigate("locationScreen");
+                },
               },
               {
                 icons: [{ name: "ic_add_location" }],

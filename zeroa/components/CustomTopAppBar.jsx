@@ -45,7 +45,7 @@ export default function CustomTopAppBar({
         style={{
           fontFamily: "InterMedium",
           fontSize: 18,
-          color: CustomColor.OnPrimary,
+          color: titleColor ? titleColor : CustomColor.OnPrimary,
           flex: 1,
           marginLeft: leadingOptions ? 16 : 10,
         }}
