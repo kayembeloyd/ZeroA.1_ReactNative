@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar, Text } from "react-native";
 import { View } from "react-native";
 import CustomTopAppBar from "../components/CustomTopAppBar";
@@ -11,24 +11,27 @@ import House from "../components/House";
 import { FlatList } from "react-native";
 import CustomDialog from "../components/CustomDialog";
 import KeypadDialogContent from "../components/KeypadDialogContent";
+import { local_houses, netRequest } from "../network/Middleman";
 
 export default function HomeScreen({ navigation }) {
-  const houses = [
-    { id: 0, type: "header" },
-    { id: 1 },
-    { id: 2 },
-    { id: 3 },
-    { id: 4 },
-    { id: 5 },
-    { id: 6 },
-    { id: 7 },
-    { id: 8 },
-    { id: 9 },
-    { id: 10 },
-  ];
+  const houses = [{ id: 0, type: "header" }, ...local_houses];
 
   const [budgetInputDialogVisibility, setBudgetInputDialogVisibility] =
     useState(false);
+
+  const housesRequest = () => {
+    netRequest("/houses", { token: { token: "" } })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    housesRequest();
+  }, []);
 
   const ListHeaderComponent = () => {
     return (
