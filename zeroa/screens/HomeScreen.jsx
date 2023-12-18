@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StatusBar, Text } from "react-native";
 import { View } from "react-native";
 import CustomTopAppBar from "../components/CustomTopAppBar";
@@ -11,18 +11,35 @@ import House from "../components/House";
 import { FlatList } from "react-native";
 import CustomDialog from "../components/CustomDialog";
 import KeypadDialogContent from "../components/KeypadDialogContent";
-import { local_houses, netRequest } from "../network/Middleman";
+import { netRequest } from "../network/Middleman";
 
 export default function HomeScreen({ navigation }) {
-  const houses = [{ id: 0, type: "header" }, ...local_houses];
+  const [houseFilters, setHouseFilters] = useState([
+    { leadText: "From", value: 15000 }, // rent_fee_min
+    { leadText: "To", value: 30000 }, // rent_fee_max
+    { leadText: "Exact Fee", value: 3000 }, // rent_fee
+    { value: 2 }, // location_id
+  ]);
 
-  const [budgetInputDialogVisibility, setBudgetInputDialogVisibility] =
-    useState(false);
+  const RENT_FEE_MIN = 0;
+  const RENT_FEE_MAX = 1;
+  const RENT_FEE = 3;
+  const LOCATION_ID = 4;
+
+  const numPadValueToFilterIndex = useRef(-1);
+
+  const [numPadDialogVisibity, setNumPadDialogVisibity] = useState(false);
+  const [houses, setHouses] = useState([{ id: 0, type: "header" }]);
+
+  const [totalHouses, setTotalHouses] = useState(0);
 
   const housesRequest = () => {
-    netRequest("/houses", { token: { token: "" } })
+    netRequest("/houses", { client: "mobile" })
       .then((response) => {
-        console.log(response);
+        if (!response.success) return;
+
+        setHouses(() => [{ id: 0, type: "header" }, ...response.houses.data]);
+        setTotalHouses(response.houses.total);
       })
       .catch((error) => {
         console.error(error);
@@ -62,7 +79,9 @@ export default function HomeScreen({ navigation }) {
               <CustomButton
                 title={"More filters"}
                 onPress={() => {
-                  navigation.navigate("filtersScreen");
+                  navigation.navigate("filtersScreen", {
+                    initialHouseFilters: houseFilters,
+                  });
                 }}
               />
             }
@@ -74,12 +93,20 @@ export default function HomeScreen({ navigation }) {
             filterChips={[
               {
                 uneditableText: "From",
-                text: "15k",
+                text: houseFilters[RENT_FEE_MIN].value,
                 onPress: () => {
-                  setBudgetInputDialogVisibility(true);
+                  numPadValueToFilterIndex.current = RENT_FEE_MIN;
+                  setNumPadDialogVisibity(true);
                 },
               },
-              { uneditableText: "To", text: "20k" },
+              {
+                uneditableText: "To",
+                text: houseFilters[RENT_FEE_MAX].value,
+                onPress: () => {
+                  numPadValueToFilterIndex.current = RENT_FEE_MAX;
+                  setNumPadDialogVisibity(true);
+                },
+              },
               {
                 uneditableText: "Exact price",
                 text: "?",
@@ -144,7 +171,7 @@ export default function HomeScreen({ navigation }) {
             color: CustomColor.OnPrimaryContainer,
           }}
         >
-          45 Houses Found
+          {totalHouses} Houses Found
         </Text>
         <Icons name={"ic_filter_menu"} color={CustomColor.OnPrimaryContainer} />
       </View>
@@ -156,11 +183,20 @@ export default function HomeScreen({ navigation }) {
       <StatusBar backgroundColor={CustomColor.Primary} />
 
       <CustomDialog
-        visible={budgetInputDialogVisibility}
+        visible={numPadDialogVisibity}
         contentComponent={
           <KeypadDialogContent
-            onDonePress={() => {
-              setBudgetInputDialogVisibility(false);
+            initialValue={houseFilters[numPadValueToFilterIndex.current]?.value}
+            inputTitle={
+              houseFilters[numPadValueToFilterIndex.current]?.leadText
+            }
+            onDonePress={(numPadValue) => {
+              setNumPadDialogVisibity(false);
+              setHouseFilters((oldHouseFilters) => {
+                oldHouseFilters[numPadValueToFilterIndex.current].value =
+                  numPadValue;
+                return oldHouseFilters;
+              });
             }}
           />
         }
@@ -177,8 +213,9 @@ export default function HomeScreen({ navigation }) {
           else
             return (
               <House
+                house={item}
                 onPress={() => {
-                  navigation.navigate("houseScreen");
+                  navigation.navigate("houseScreen", { house: item });
                 }}
               />
             );

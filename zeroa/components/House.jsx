@@ -3,12 +3,9 @@ import { Text, View } from "react-native";
 import { CustomColor } from "../assets/colors/Color";
 import Icons from "../assets/icons/Icons";
 import { Image } from "react-native";
-import { Dimensions } from "react-native";
 import { TouchableOpacity } from "react-native";
 
-export default function House({ onPress }) {
-  const { width } = Dimensions.get("window");
-
+export default function House({ house, onPress }) {
   return (
     <TouchableOpacity // House Container
       style={{
@@ -26,13 +23,16 @@ export default function House({ onPress }) {
       >
         <Icons name={"ic_location"} color={CustomColor.OnPrimaryContainer} />
         <Text
+          numberOfLines={1}
           style={{
             fontFamily: "InterRegular",
             fontSize: 15,
             color: CustomColor.OnPrimaryContainer,
+            flex: 1,
           }}
         >
-          Area 49 Bagdad close to Sparrows.
+          {house.location.name} {house.location.district}{" "}
+          {house.location.region} {house.location.description}
         </Text>
       </View>
 
@@ -61,21 +61,22 @@ export default function House({ onPress }) {
               color: CustomColor.OnPrimaryContainer,
             }}
           >
-            MK 20,000/month
+            MK {house.rent_fee}/month
           </Text>
         </View>
 
         <Text style={{ fontFamily: "InterRegular", fontSize: 13 }}>
-          2-3 months instalment
+          Payable {house.installment_period} month
+          {house.installment_period > 1 ? "s" : null}
         </Text>
       </View>
 
       <Text style={{ fontFamily: "InterRegular", fontSize: 13 }}>
-        Available 1 December 2023
+        Available on {house.available_on}
       </Text>
 
       <Text style={{ fontFamily: "InterRegular", fontSize: 13 }}>
-        3 Bedrooms
+        {house.number_of_rooms} Bedroom{house.number_of_rooms > 1 ? "s" : null}
       </Text>
 
       <Image // House image
@@ -84,7 +85,7 @@ export default function House({ onPress }) {
           width: "100%",
           height: 152,
         }}
-        source={require("../assets/images/house_1.jpg")}
+        src={house.images[0].path}
       />
 
       <View // Details Container
@@ -94,16 +95,20 @@ export default function House({ onPress }) {
           alignItems: "flex-end",
         }}
       >
-        <Text style={{ fontFamily: "InterRegular", fontSize: 14 }}>
-          ✓ 3 bedrooms smart house, {"\n"}✓ Masters en suite (shower and
-          bathtub). {"\n"}✓ Fitted wardrobes
+        <Text
+          numberOfLines={3}
+          style={{ fontFamily: "InterRegular", fontSize: 14, flex: 1 }}
+        >
+          {house.description}
         </Text>
 
         <View // Views Container
           style={{ flexDirection: "row", alignItems: "center", gap: 6 }}
         >
           <Icons name={"ic_view"} color={CustomColor.OnPrimaryContainer} />
-          <Text style={{ fontFamily: "InterRegular", fontSize: 13 }}>2</Text>
+          <Text style={{ fontFamily: "InterRegular", fontSize: 13 }}>
+            {house.number_of_views}
+          </Text>
         </View>
       </View>
 

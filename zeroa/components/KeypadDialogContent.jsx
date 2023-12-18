@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View } from "react-native";
 import { CustomColor } from "../assets/colors/Color";
 import Icons from "../assets/icons/Icons";
 import CustomButton from "./CustomButton";
 import { TouchableOpacity } from "react-native";
 
-export default function KeypadDialogContent({ onDonePress }) {
+export default function KeypadDialogContent({
+  inputTitle,
+  initialValue,
+  onDonePress,
+}) {
+  const [numPadValue, setNumPadValue] = useState(
+    initialValue ? initialValue : "0"
+  );
+
   const numKeyRows = [
     [
       {
@@ -113,7 +121,7 @@ export default function KeypadDialogContent({ onDonePress }) {
               fontFamily: "InterRegular",
             }}
           >
-            From:{" "}
+            {inputTitle}:{" "}
           </Text>
           <Text
             style={{
@@ -122,7 +130,7 @@ export default function KeypadDialogContent({ onDonePress }) {
               fontFamily: "InterRegular",
             }}
           >
-            MK2000
+            MK {numPadValue}
           </Text>
         </View>
 
@@ -154,6 +162,30 @@ export default function KeypadDialogContent({ onDonePress }) {
                         alignItems: "center",
                         justifyContent: "center",
                         margin: -1,
+                      }}
+                      onPress={() => {
+                        setNumPadValue((oldNumPadValue) => {
+                          if (oldNumPadValue == "0" && numKey.id == 0)
+                            return "0";
+
+                          if (
+                            (oldNumPadValue == "0" ||
+                              oldNumPadValue.length == 1) &&
+                            numKey.id == -1
+                          )
+                            return "0";
+
+                          if (numKey.id == -1 && oldNumPadValue.length > 1)
+                            return String(oldNumPadValue).substring(
+                              0,
+                              String(oldNumPadValue).length - 1
+                            );
+
+                          if (oldNumPadValue == "0" && numKey.id != -1)
+                            return String(numKey.id);
+
+                          return String(oldNumPadValue) + String(numKey.id);
+                        });
                       }}
                     >
                       {numKey.id == -1 ? (
@@ -194,7 +226,7 @@ export default function KeypadDialogContent({ onDonePress }) {
           <CustomButton
             style={{ borderWidth: 0 }}
             title={"Done"}
-            onPress={onDonePress}
+            onPress={() => onDonePress(numPadValue)}
           />
         </View>
       </View>

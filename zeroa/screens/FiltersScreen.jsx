@@ -1,11 +1,26 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import { View, StatusBar } from "react-native";
 import CustomTopAppBar from "../components/CustomTopAppBar";
 import { CustomColor } from "../assets/colors/Color";
 import FilterRow from "../components/FilterRow";
 import ListItem from "../components/ListItem";
+import CustomDialog from "../components/CustomDialog";
+import KeypadDialogContent from "../components/KeypadDialogContent";
 
-export default function FiltersScreen() {
+export default function FiltersScreen({ route }) {
+  const [houseFilters, setHouseFilters] = useState(
+    route.params.initialHouseFilters
+  );
+
+  const RENT_FEE_MIN = 0;
+  const RENT_FEE_MAX = 1;
+  const RENT_FEE = 3;
+  const LOCATION_ID = 4;
+
+  const numPadValueToFilterIndex = useRef(-1);
+
+  const [numPadDialogVisibity, setNumPadDialogVisibity] = useState(false);
+
   const additionalFilters = [
     {
       title: "Security",
@@ -34,6 +49,26 @@ export default function FiltersScreen() {
     >
       <StatusBar backgroundColor={CustomColor.Primary} />
 
+      <CustomDialog
+        visible={numPadDialogVisibity}
+        contentComponent={
+          <KeypadDialogContent
+            initialValue={houseFilters[numPadValueToFilterIndex.current]?.value}
+            inputTitle={
+              houseFilters[numPadValueToFilterIndex.current]?.leadText
+            }
+            onDonePress={(numPadValue) => {
+              setNumPadDialogVisibity(false);
+              setHouseFilters((oldHouseFilters) => {
+                oldHouseFilters[numPadValueToFilterIndex.current].value =
+                  numPadValue;
+                return oldHouseFilters;
+              });
+            }}
+          />
+        }
+      />
+
       <CustomTopAppBar
         leadingOptions={[{ name: "ic_check" }]}
         trailingOptions={[{ name: "ic_close" }]}
@@ -51,12 +86,20 @@ export default function FiltersScreen() {
           filterChips={[
             {
               uneditableText: "From",
-              text: "15k",
+              text: houseFilters[RENT_FEE_MIN].value,
               onPress: () => {
-                setBudgetInputDialogVisibility(true);
+                numPadValueToFilterIndex.current = RENT_FEE_MIN;
+                setNumPadDialogVisibity(true);
               },
             },
-            { uneditableText: "To", text: "20k" },
+            {
+              uneditableText: "To",
+              text: houseFilters[RENT_FEE_MAX].value,
+              onPress: () => {
+                numPadValueToFilterIndex.current = RENT_FEE_MAX;
+                setNumPadDialogVisibity(true);
+              },
+            },
             {
               uneditableText: "Exact price",
               text: "?",

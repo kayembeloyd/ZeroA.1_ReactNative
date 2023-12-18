@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, Image, StatusBar, Text, View } from "react-native";
 import { CustomColor } from "../assets/colors/Color";
 import CustomTopAppBar from "../components/CustomTopAppBar";
@@ -7,20 +7,23 @@ import ListItem from "../components/ListItem";
 import { ScrollView } from "react-native";
 import CustomButton from "../components/CustomButton";
 
-export default function HouseScreen() {
-  const houseImages = [
-    require("../assets/images/house_1.jpg"),
-    require("../assets/images/house_2.jpg"),
-    require("../assets/images/house_3.jpg"),
-  ];
+export default function HouseScreen({ navigation, route }) {
+  const [house, setHouse] = useState(route.params.house);
 
   return (
     <View>
       <StatusBar backgroundColor={CustomColor.Primary} />
 
       <CustomTopAppBar
-        leadingOptions={[{ name: "ic_back" }]}
-        title={"House #434"}
+        leadingOptions={[
+          {
+            name: "ic_back",
+            onPress: () => {
+              navigation.goBack();
+            },
+          },
+        ]}
+        title={"House #" + house.id}
       />
 
       <ScrollView>
@@ -30,7 +33,7 @@ export default function HouseScreen() {
           }}
           contentContainerStyle={{ gap: 6 }}
           horizontal
-          data={houseImages}
+          data={house.images}
           keyExtractor={(item, index) => index}
           renderItem={({ item, index }) => {
             return (
@@ -39,9 +42,9 @@ export default function HouseScreen() {
                   borderRadius: 12,
                   width: 330,
                   height: 192,
-                  marginRight: index == houseImages.length - 1 ? 20 : 0,
+                  marginRight: index == house.images.length - 1 ? 20 : 0,
                 }}
-                source={item}
+                src={item.path}
               />
             );
           }}
@@ -75,21 +78,22 @@ export default function HouseScreen() {
                   color: CustomColor.OnPrimaryContainer,
                 }}
               >
-                MK 20,000/month
+                MK {house.rent_fee}/month
               </Text>
             </View>
 
             <Text style={{ fontFamily: "InterRegular", fontSize: 13 }}>
-              2-3 months instalment
+              Payable {house.installment_period} month
+              {house.installment_period > 1 ? "s" : null}
             </Text>
           </View>
 
           <Text style={{ fontFamily: "InterRegular", fontSize: 13 }}>
-            Available 1 December 2023
+            Available on {house.available_on}
           </Text>
 
           <View // Location container
-            style={{ flexDirection: "row", alignItems: "center", gap: 10 }}
+            style={{ flexDirection: "row", alignItems: "flex-start", gap: 10 }}
           >
             <Icons
               name={"ic_location"}
@@ -102,7 +106,8 @@ export default function HouseScreen() {
                 color: CustomColor.OnPrimaryContainer,
               }}
             >
-              Area 49 Bagdad close to Sparrows.
+              {house.location.name} {house.location.district}{" "}
+              {house.location.region} {house.location.description}
             </Text>
           </View>
         </View>
@@ -116,12 +121,7 @@ export default function HouseScreen() {
             paddingHorizontal: 16,
           }}
         >
-          House available on 1st January 2024.{"\n"}✓ 3 bedrooms smart house,{" "}
-          {"\n"}✓ Masters en suite(shower and bathtub).{"\n"}✓ Fitted wardrobes{" "}
-          {"\n"}
-          ✓kitchen unit{"\n"}✓ Geyser{"\n"}✓ Outside smart pit latrine{"\n"}✓
-          Fruit trees mangoes,lemons and Avocados available{"\n"}✓ Fully tiled.
-          {"\n"}✓ Stand alone.{"\n"}
+          {house.description}
         </Text>
 
         <View // Views container
@@ -134,7 +134,7 @@ export default function HouseScreen() {
         >
           <Icons name={"ic_view"} />
           <Text style={{ fontFamily: "InterRegular", fontSize: 13 }}>
-            225 views
+            {house.number_of_views} views
           </Text>
         </View>
 
@@ -151,7 +151,7 @@ export default function HouseScreen() {
         </View>
         <ListItem title={"Landlord Contact"} />
 
-        {[1, 2, 3, 4, 5, 7, 8].map((contact, index) => {
+        {house.landlords.map((landlord, index) => {
           return (
             <View //Contact
               key={index}
@@ -167,7 +167,9 @@ export default function HouseScreen() {
                 style={{ flexDirection: "row", gap: 5, paddingHorizontal: 16 }}
               >
                 <Icons name={"ic_copy"} />
-                <Text style={{ fontFamily: "InterRegular" }}>0882264081</Text>
+                <Text style={{ fontFamily: "InterRegular" }}>
+                  {landlord.phone_number}
+                </Text>
               </View>
 
               <Icons name={"ic_phone"} />
