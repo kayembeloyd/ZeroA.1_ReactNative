@@ -7,10 +7,10 @@ import ListItem from "../components/ListItem";
 import CustomDialog from "../components/CustomDialog";
 import KeypadDialogContent from "../components/KeypadDialogContent";
 
-export default function FiltersScreen({ route }) {
-  const [houseFilters, setHouseFilters] = useState(
-    route.params.initialHouseFilters
-  );
+export default function FiltersScreen({ navigation, route }) {
+  const [houseFilters, setHouseFilters] = useState({
+    ...route.params.initialHouseFilters,
+  });
 
   const RENT_FEE_MIN = 0;
   const RENT_FEE_MAX = 1;
@@ -70,8 +70,26 @@ export default function FiltersScreen({ route }) {
       />
 
       <CustomTopAppBar
-        leadingOptions={[{ name: "ic_check" }]}
-        trailingOptions={[{ name: "ic_close" }]}
+        leadingOptions={[
+          {
+            name: "ic_check",
+            onPress: () => {
+              route.params.onGoBack
+                ? route.params.onGoBack(houseFilters)
+                : null;
+              navigation.goBack();
+            },
+          },
+        ]}
+        trailingOptions={[
+          {
+            name: "ic_close",
+            onPress: () => {
+              route.params.onGoBack ? route.params.onGoBack(null) : null;
+              navigation.goBack();
+            },
+          },
+        ]}
         title={"More filters"}
       />
 

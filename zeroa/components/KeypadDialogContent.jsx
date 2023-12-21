@@ -11,7 +11,7 @@ export default function KeypadDialogContent({
   onDonePress,
 }) {
   const [numPadValue, setNumPadValue] = useState(
-    initialValue ? initialValue : "0"
+    initialValue ? String(initialValue) : "0"
   );
 
   const numKeyRows = [

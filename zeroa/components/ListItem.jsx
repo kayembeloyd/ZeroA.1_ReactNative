@@ -10,6 +10,7 @@ export default function ListItem({
   endIconName,
   endButton,
   pressable,
+  onPress,
 }) {
   return (
     <TouchableOpacity // List itemContainer
@@ -25,6 +26,7 @@ export default function ListItem({
           justifyContent: "space-between",
         },
       ]}
+      onPress={onPress}
     >
       <Text
         style={{

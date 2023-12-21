@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { StatusBar, Text } from "react-native";
-import { View } from "react-native";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import { StatusBar, Text, View, FlatList } from "react-native";
 import CustomTopAppBar from "../components/CustomTopAppBar";
 import { CustomColor } from "../assets/colors/Color";
 import ListItem from "../components/ListItem";
@@ -8,7 +7,6 @@ import CustomButton from "../components/CustomButton";
 import FilterRow from "../components/FilterRow";
 import Icons from "../assets/icons/Icons";
 import House from "../components/House";
-import { FlatList } from "react-native";
 import CustomDialog from "../components/CustomDialog";
 import KeypadDialogContent from "../components/KeypadDialogContent";
 import { netRequest } from "../network/Middleman";
@@ -46,6 +44,16 @@ export default function HomeScreen({ navigation }) {
       });
   };
 
+  const [, updateState] = useState();
+  const forceUpdate = useCallback(() => updateState({}), []);
+
+  const handleBackData = (newHouseFilters) => {
+    if (newHouseFilters) {
+      setHouseFilters(newHouseFilters);
+      forceUpdate();
+    }
+  };
+
   useEffect(() => {
     housesRequest();
   }, []);
@@ -81,6 +89,7 @@ export default function HomeScreen({ navigation }) {
                 onPress={() => {
                   navigation.navigate("filtersScreen", {
                     initialHouseFilters: houseFilters,
+                    onGoBack: handleBackData,
                   });
                 }}
               />
@@ -179,7 +188,7 @@ export default function HomeScreen({ navigation }) {
   };
 
   return (
-    <View>
+    <View style={{ backgroundColor: CustomColor.OnPrimary }}>
       <StatusBar backgroundColor={CustomColor.Primary} />
 
       <CustomDialog

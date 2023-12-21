@@ -1,20 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { FlatList, StatusBar, Text, View } from "react-native";
 import CustomTopAppBar from "../components/CustomTopAppBar";
 import { CustomColor } from "../assets/colors/Color";
 import Icons from "../assets/icons/Icons";
 import FilterRow from "../components/FilterRow";
 import ListItem from "../components/ListItem";
+import { lilongweLocations } from "../network/Middleman";
 
-export default function LocationScreen() {
+export default function LocationScreen({ navigation }) {
+  const [selectedLocations, setSelectedLocations] = useState([
+    {
+      uneditableText: "Area 3",
+      onPress: () => {},
+    },
+  ]);
+
   const ListHeaderItem = () => {
     return (
       <View>
         <CustomTopAppBar
           style={{ backgroundColor: CustomColor.PrimaryContainer }}
-          leadingOptions={[{ name: "ic_back" }]}
+          leadingOptions={[
+            {
+              name: "ic_back",
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ]}
           title={"Search Location"}
-          trailingOptions={[{ name: "ic_close" }]}
+          trailingOptions={[
+            {
+              name: "ic_close",
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ]}
           titleColor={CustomColor.OnPrimaryContainer}
         />
 
@@ -58,14 +80,7 @@ export default function LocationScreen() {
       <View // SelectedLocationsContainer
         style={{ backgroundColor: CustomColor.PrimaryContainer }}
       >
-        <FilterRow
-          filterTitle={"Selected"}
-          filterChips={[
-            {
-              uneditableText: "Lilongwe Area 23",
-            },
-          ]}
-        />
+        <FilterRow filterTitle={"Selected"} filterChips={selectedLocations} />
 
         <ListItem title={"Central Region"} endIconName={"ic_down"} pressable />
         <ListItem title={"Lilongwe"} endIconName={"ic_down"} pressable />
@@ -73,26 +88,45 @@ export default function LocationScreen() {
     );
   };
 
+  const removeMe = (item) => {
+    console.log("Remove", item);
+  };
+
   return (
     <View>
       <StatusBar backgroundColor={CustomColor.PrimaryContainer} />
 
       <FlatList
-        data={[
-          1, 3, 4, 5, 6, 7, 8, 9, 0, 1, 2, 3, 214, 3243, 2, 543, 254, 3, 5, 23,
-          432, 43, 25, 43, 5432, 532, 4, 3225, 4353, 5, 32, 43, 2, 43, 24, 54,
-          35, 4, 34, 32, 4, 3224, 32, 432, 54, 3, 4123, 35, 436, 58, 78, 767,
-          656, 68, 7, 985, 6543,
-        ]}
+        data={lilongweLocations}
         showsVerticalScrollIndicator={false}
         keyExtractor={({ item, index }) => index}
         stickyHeaderIndices={[1]}
         ListHeaderComponent={ListHeaderItem}
         renderItem={({ item, index }) => {
-          if (index == 0) return <SelectedLocationsContainer key={index} />;
+          if (index == 0) return <SelectedLocationsContainer />;
           else
             return (
-              <ListItem key={index} title={"Location " + item} pressable />
+              <ListItem
+                title={item}
+                pressable
+                onPress={() => {
+                  for (let i = 0; i < selectedLocations.length; i++) {
+                    if (selectedLocations[i].uneditableText == item) return;
+                  }
+
+                  setSelectedLocations((oldSelectedLocations) => {
+                    const newSelectedLocations = [...oldSelectedLocations];
+                    newSelectedLocations.push({
+                      uneditableText: item,
+                      onPress: () => {
+                        removeMe(item);
+                      },
+                    });
+
+                    return newSelectedLocations;
+                  });
+                }}
+              />
             );
         }}
       />
