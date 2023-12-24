@@ -6,12 +6,13 @@ import FilterRow from "../components/FilterRow";
 import ListItem from "../components/ListItem";
 import CustomChip from "../components/CustomChip";
 import { additionalFilters, defaultFilters } from "../network/Middleman";
+import _ from "lodash";
 
 export default function FiltersScreen({ navigation, route }) {
   // Data layer
   const [houseFilters, setHouseFilters] = useState({
-    defaultFilters: [...defaultFilters],
-    additionalFilters: [...additionalFilters],
+    defaultFilters: _.cloneDeep(defaultFilters),
+    additionalFilters: _.cloneDeep(additionalFilters),
   });
 
   return (
@@ -72,14 +73,23 @@ export default function FiltersScreen({ navigation, route }) {
                         : null
                     }
                     showDialog={filterChip.showDialog}
-                    onPress={null}
+                    onPress={
+                      filterChip.onPress
+                        ? () => {
+                            filterChip.onPress(navigation);
+                          }
+                        : null
+                    }
                     onSubmitData={(data) => {
-                      console.log(
-                        "This is data from the dialog for " +
-                          filterChip.filterName +
-                          " : " +
-                          data
-                      );
+                      setHouseFilters((oldHouseFilters) => {
+                        const newHouseFilters = { ...oldHouseFilters };
+
+                        newHouseFilters.defaultFilters[categoryIndex].filters[
+                          filterChipIndex
+                        ].filterValue = data;
+
+                        return newHouseFilters;
+                      });
                     }}
                   />
                 );

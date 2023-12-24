@@ -9,6 +9,7 @@ export default function KeypadDialogContent({
   inputTitle,
   initialValue,
   onDonePress,
+  onCancelPress,
 }) {
   const [numPadValue, setNumPadValue] = useState(
     initialValue ? String(initialValue) : "0"
@@ -222,6 +223,7 @@ export default function KeypadDialogContent({
             style={{ borderWidth: 0 }}
             title={"Cancel"}
             titleColor={"#555358"}
+            onPress={onCancelPress}
           />
           <CustomButton
             style={{ borderWidth: 0 }}

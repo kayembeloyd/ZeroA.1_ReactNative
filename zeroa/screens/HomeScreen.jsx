@@ -106,12 +106,15 @@ export default function HomeScreen({ navigation }) {
                           : null
                       }
                       onSubmitData={(data) => {
-                        console.log(
-                          "This is data from the dialog for " +
-                            filterChip.filterName +
-                            " : " +
-                            data
-                        );
+                        setHouseFilters((oldHouseFilters) => {
+                          const newHouseFilters = { ...oldHouseFilters };
+
+                          newHouseFilters.defaultFilters[categoryIndex].filters[
+                            filterChipIndex
+                          ].filterValue = data;
+
+                          return newHouseFilters;
+                        });
                       }}
                     />
                   );

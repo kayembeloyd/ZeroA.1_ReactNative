@@ -54,6 +54,7 @@ export default function CustomChip({
               setNumPadDialogVisibity(false);
               onSubmitData ? onSubmitData(numPadValue) : null;
             }}
+            onCancelPress={() => setNumPadDialogVisibity(false)}
           />
         }
       />
