@@ -4,44 +4,15 @@ import CustomTopAppBar from "../components/CustomTopAppBar";
 import { CustomColor } from "../assets/colors/Color";
 import FilterRow from "../components/FilterRow";
 import ListItem from "../components/ListItem";
-import CustomDialog from "../components/CustomDialog";
-import KeypadDialogContent from "../components/KeypadDialogContent";
+import CustomChip from "../components/CustomChip";
+import { additionalFilters, defaultFilters } from "../network/Middleman";
 
 export default function FiltersScreen({ navigation, route }) {
+  // Data layer
   const [houseFilters, setHouseFilters] = useState({
-    ...route.params.initialHouseFilters,
+    defaultFilters: [...defaultFilters],
+    additionalFilters: [...additionalFilters],
   });
-
-  const RENT_FEE_MIN = 0;
-  const RENT_FEE_MAX = 1;
-  const RENT_FEE = 3;
-  const LOCATION_ID = 4;
-
-  const numPadValueToFilterIndex = useRef(-1);
-
-  const [numPadDialogVisibity, setNumPadDialogVisibity] = useState(false);
-
-  const additionalFilters = [
-    {
-      title: "Security",
-      filterChips: [
-        { text: "Fenced" },
-        { text: "Without fence" },
-        { text: "dogs" },
-      ],
-    },
-    {
-      title: "Floor",
-      filterChips: [
-        { text: "Tiled" },
-        { text: "Cement" },
-        { text: "Wood" },
-        { text: "Tiled" },
-        { text: "Cement" },
-        { text: "Wood" },
-      ],
-    },
-  ];
 
   return (
     <View // Main container
@@ -49,34 +20,11 @@ export default function FiltersScreen({ navigation, route }) {
     >
       <StatusBar backgroundColor={CustomColor.Primary} />
 
-      <CustomDialog
-        visible={numPadDialogVisibity}
-        contentComponent={
-          <KeypadDialogContent
-            initialValue={houseFilters[numPadValueToFilterIndex.current]?.value}
-            inputTitle={
-              houseFilters[numPadValueToFilterIndex.current]?.leadText
-            }
-            onDonePress={(numPadValue) => {
-              setNumPadDialogVisibity(false);
-              setHouseFilters((oldHouseFilters) => {
-                oldHouseFilters[numPadValueToFilterIndex.current].value =
-                  numPadValue;
-                return oldHouseFilters;
-              });
-            }}
-          />
-        }
-      />
-
       <CustomTopAppBar
         leadingOptions={[
           {
             name: "ic_check",
             onPress: () => {
-              route.params.onGoBack
-                ? route.params.onGoBack(houseFilters)
-                : null;
               navigation.goBack();
             },
           },
@@ -85,7 +33,6 @@ export default function FiltersScreen({ navigation, route }) {
           {
             name: "ic_close",
             onPress: () => {
-              route.params.onGoBack ? route.params.onGoBack(null) : null;
               navigation.goBack();
             },
           },
@@ -99,61 +46,47 @@ export default function FiltersScreen({ navigation, route }) {
           backgroundColor: CustomColor.SecondaryContainer,
         }}
       >
-        <FilterRow
-          filterTitle={"Monthly rent"}
-          filterChips={[
-            {
-              uneditableText: "From",
-              text: houseFilters[RENT_FEE_MIN].value,
-              onPress: () => {
-                numPadValueToFilterIndex.current = RENT_FEE_MIN;
-                setNumPadDialogVisibity(true);
-              },
-            },
-            {
-              uneditableText: "To",
-              text: houseFilters[RENT_FEE_MAX].value,
-              onPress: () => {
-                numPadValueToFilterIndex.current = RENT_FEE_MAX;
-                setNumPadDialogVisibity(true);
-              },
-            },
-            {
-              uneditableText: "Exact price",
-              text: "?",
-              backgroundColor: CustomColor.Secondary,
-            },
-          ]}
-        />
-
-        <FilterRow
-          filterTitle={"Location"}
-          filterChips={[
-            {
-              uneditableText: "Lilongwe Area 23",
-              icons: [{ name: "ic_location" }],
-            },
-            {
-              icons: [{ name: "ic_add_location" }],
-              backgroundColor: CustomColor.Secondary,
-            },
-          ]}
-        />
-        <FilterRow
-          filterTitle={"Rooms"}
-          filterChips={[
-            { text: "1" },
-            { text: "2" },
-            { text: "3" },
-            { text: "4" },
-            { text: "5" },
-            {
-              uneditableText: "Custom",
-              text: "?",
-              backgroundColor: CustomColor.Secondary,
-            },
-          ]}
-        />
+        {/* Load default filters */}
+        {houseFilters.defaultFilters.map((category, categoryIndex) => {
+          return (
+            <FilterRow
+              key={categoryIndex}
+              filterTitle={category.filterCategory}
+            >
+              {category.filters.map((filterChip, filterChipIndex) => {
+                return (
+                  <CustomChip
+                    style={{
+                      backgroundColor: filterChip.backgroundColor
+                        ? filterChip.backgroundColor
+                        : null,
+                    }}
+                    key={filterChipIndex}
+                    uneditableText={
+                      filterChip.showFilterName ? filterChip.filterName : null
+                    }
+                    text={filterChip.filterValue}
+                    icons={
+                      filterChip.iconName
+                        ? [{ name: filterChip.iconName }]
+                        : null
+                    }
+                    showDialog={filterChip.showDialog}
+                    onPress={null}
+                    onSubmitData={(data) => {
+                      console.log(
+                        "This is data from the dialog for " +
+                          filterChip.filterName +
+                          " : " +
+                          data
+                      );
+                    }}
+                  />
+                );
+              })}
+            </FilterRow>
+          );
+        })}
       </View>
 
       <ListItem
@@ -165,13 +98,45 @@ export default function FiltersScreen({ navigation, route }) {
       <View // Additional filters
         style={{ backgroundColor: CustomColor.SecondaryContainer }}
       >
-        {additionalFilters.map((additionalFilter, additionalFilterIndex) => {
+        {/* Load additional filters */}
+        {houseFilters.additionalFilters.map((category, categoryIndex) => {
           return (
             <FilterRow
-              key={additionalFilterIndex}
-              filterTitle={additionalFilter.title}
-              filterChips={additionalFilter.filterChips}
-            />
+              key={categoryIndex}
+              filterTitle={category.filterCategory}
+            >
+              {category.filters.map((filterChip, filterChipIndex) => {
+                return (
+                  <CustomChip
+                    style={{
+                      backgroundColor: filterChip.backgroundColor
+                        ? filterChip.backgroundColor
+                        : null,
+                    }}
+                    key={filterChipIndex}
+                    uneditableText={
+                      filterChip.showFilterName ? filterChip.filterName : null
+                    }
+                    text={filterChip.filterValue}
+                    icons={
+                      filterChip.iconName
+                        ? [{ name: filterChip.iconName }]
+                        : null
+                    }
+                    showDialog={filterChip.showDialog}
+                    onPress={null}
+                    onSubmitData={(data) => {
+                      console.log(
+                        "This is data from the dialog for " +
+                          filterChip.filterName +
+                          " : " +
+                          data
+                      );
+                    }}
+                  />
+                );
+              })}
+            </FilterRow>
           );
         })}
       </View>

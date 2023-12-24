@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Pressable, Text, TouchableOpacity, View } from "react-native";
 import Icons from "../assets/icons/Icons";
 import { CustomColor } from "../assets/colors/Color";
+import CustomDialog from "./CustomDialog";
+import KeypadDialogContent from "./KeypadDialogContent";
 
 export default function CustomChip({
   style,
@@ -9,7 +11,12 @@ export default function CustomChip({
   text,
   icons,
   onPress,
+  onSubmitData,
+  showDialog,
 }) {
+  // Data layer
+  const [numPadDialogVisibity, setNumPadDialogVisibity] = useState(false);
+
   return (
     <TouchableOpacity // Chip container
       style={[
@@ -27,8 +34,30 @@ export default function CustomChip({
           minHeight: 32,
         },
       ]}
-      onPress={onPress}
+      onPress={
+        showDialog
+          ? () => {
+              setNumPadDialogVisibity(true);
+            }
+          : onPress
+          ? onPress
+          : null
+      }
     >
+      <CustomDialog
+        visible={numPadDialogVisibity}
+        contentComponent={
+          <KeypadDialogContent
+            inputTitle={uneditableText}
+            initialValue={text}
+            onDonePress={(numPadValue) => {
+              setNumPadDialogVisibity(false);
+              onSubmitData ? onSubmitData(numPadValue) : null;
+            }}
+          />
+        }
+      />
+
       {uneditableText ? (
         <Text
           style={{

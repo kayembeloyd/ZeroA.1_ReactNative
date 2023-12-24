@@ -3,7 +3,7 @@ import { Text, View } from "react-native";
 import CustomChip from "./CustomChip";
 import { ScrollView } from "react-native";
 
-export default function FilterRow({ filterTitle, filterChips }) {
+export default function FilterRow({ filterTitle, children, filterChips }) {
   return (
     <View // Filter Row container
       style={{
@@ -32,22 +32,7 @@ export default function FilterRow({ filterTitle, filterChips }) {
           paddingHorizontal: 16,
         }}
       >
-        {filterChips?.map((filterChip, filterChipIndex) => {
-          return (
-            <CustomChip
-              style={{
-                backgroundColor: filterChip.backgroundColor
-                  ? filterChip.backgroundColor
-                  : null,
-              }}
-              key={filterChipIndex}
-              text={filterChip.text}
-              uneditableText={filterChip.uneditableText}
-              icons={filterChip.icons}
-              onPress={filterChip.onPress ? filterChip.onPress : () => {}}
-            />
-          );
-        })}
+        {children}
       </ScrollView>
     </View>
   );

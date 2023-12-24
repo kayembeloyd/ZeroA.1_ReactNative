@@ -11,6 +11,230 @@ export const local_houses = [
   { id: 10 },
 ];
 
+export const additionalFilters = [
+  {
+    filterCategory: "Floor",
+    filters: [
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Floor",
+        filterValue: "Tiled",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Floor",
+        filterValue: "Cement",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Floor",
+        filterValue: "Wood",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Floor",
+        filterValue: "Tiled",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Floor",
+        filterValue: "Cement",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Floor",
+        filterValue: "Wood",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+    ],
+  },
+  {
+    filterCategory: "Security",
+    filters: [
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Security",
+        filterValue: "Fenced",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Security",
+        filterValue: "Without fence",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Security",
+        filterValue: "Dogs available",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+    ],
+  },
+];
+
+export const defaultFilters = [
+  {
+    filterCategory: "Monthly rent",
+    filters: [
+      {
+        showFilterName: true,
+        iconName: null,
+        filterName: "From",
+        filterValue: null,
+        isActive: false,
+        showDialog: true,
+        isButton: false,
+      },
+      {
+        showFilterName: true,
+        iconName: null,
+        filterName: "To",
+        filterValue: null,
+        isActive: false,
+        showDialog: true,
+        isButton: false,
+      },
+      {
+        showFilterName: true,
+        iconName: null,
+        filterName: "Exact price ?",
+        filterValue: null,
+        isActive: false,
+        showDialog: false,
+        isButton: true,
+      },
+    ],
+  },
+
+  {
+    filterCategory: "Location",
+    filters: [
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Location",
+        filterValue: "Lilongwe Area 3",
+        isActive: false,
+        showDialog: false,
+        isButton: false,
+      },
+
+      {
+        showFilterName: false,
+        iconName: "ic_add_location",
+        filterName: null,
+        filterValue: null,
+        isActive: false,
+        showDialog: false,
+        isButton: true,
+        onPress: (navigation) => {
+          navigation.navigate("locationScreen");
+        },
+      },
+    ],
+  },
+
+  {
+    filterCategory: "Location",
+    filters: [
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Number of rooms",
+        filterValue: 1,
+        isActive: false,
+        showDialog: false,
+        isButton: true,
+      },
+
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Number of rooms",
+        filterValue: 2,
+        isActive: false,
+        showDialog: false,
+        isButton: true,
+      },
+
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Number of rooms",
+        filterValue: 3,
+        isActive: false,
+        showDialog: false,
+        isButton: true,
+      },
+
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Number of rooms",
+        filterValue: 4,
+        isActive: false,
+        showDialog: false,
+        isButton: true,
+      },
+
+      {
+        showFilterName: false,
+        iconName: null,
+        filterName: "Number of rooms",
+        filterValue: 5,
+        isActive: false,
+        showDialog: false,
+        isButton: true,
+      },
+
+      {
+        showFilterName: true,
+        iconName: null,
+        filterName: "Custom rooms ?",
+        filterValue: null,
+        isActive: false,
+        showDialog: true,
+        isButton: false,
+      },
+    ],
+  },
+];
+
 export const lilongweLocations = [
   "Area 10",
   "Area 11",
@@ -90,7 +314,7 @@ export const lilongweLocations = [
   "Likuni Boys Secondary School",
 ];
 
-const ZEROA_API_ADDRESS = "http://192.168.210.33:8001/api";
+const ZEROA_API_ADDRESS = "http://192.168.63.33:8001/api";
 
 export const netRequest = async (url, body) => {
   try {

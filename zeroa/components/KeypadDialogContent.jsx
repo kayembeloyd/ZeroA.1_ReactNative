@@ -130,7 +130,7 @@ export default function KeypadDialogContent({
               fontFamily: "InterRegular",
             }}
           >
-            MK {numPadValue}
+            {numPadValue}
           </Text>
         </View>
 

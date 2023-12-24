@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StatusBar, Text, View, FlatList } from "react-native";
 import CustomTopAppBar from "../components/CustomTopAppBar";
 import { CustomColor } from "../assets/colors/Color";
@@ -7,57 +7,35 @@ import CustomButton from "../components/CustomButton";
 import FilterRow from "../components/FilterRow";
 import Icons from "../assets/icons/Icons";
 import House from "../components/House";
-import CustomDialog from "../components/CustomDialog";
-import KeypadDialogContent from "../components/KeypadDialogContent";
-import { netRequest } from "../network/Middleman";
+import { defaultFilters, netRequest } from "../network/Middleman";
+import CustomChip from "../components/CustomChip";
 
 export default function HomeScreen({ navigation }) {
-  const [houseFilters, setHouseFilters] = useState([
-    { leadText: "From", value: 15000 }, // rent_fee_min
-    { leadText: "To", value: 30000 }, // rent_fee_max
-    { leadText: "Exact Fee", value: 3000 }, // rent_fee
-    { value: 2 }, // location_id
-  ]);
-
-  const RENT_FEE_MIN = 0;
-  const RENT_FEE_MAX = 1;
-  const RENT_FEE = 3;
-  const LOCATION_ID = 4;
-
-  const numPadValueToFilterIndex = useRef(-1);
-
-  const [numPadDialogVisibity, setNumPadDialogVisibity] = useState(false);
+  // Data layer
   const [houses, setHouses] = useState([{ id: 0, type: "header" }]);
+  const [houseFilters, setHouseFilters] = useState({
+    defaultFilters: [...defaultFilters],
+    additionalFilters: [],
+  });
 
-  const [totalHouses, setTotalHouses] = useState(0);
-
+  // Networking Layer
   const housesRequest = () => {
     netRequest("/houses", { client: "mobile" })
       .then((response) => {
         if (!response.success) return;
 
         setHouses(() => [{ id: 0, type: "header" }, ...response.houses.data]);
-        setTotalHouses(response.houses.total);
       })
       .catch((error) => {
         console.error(error);
       });
   };
 
-  const [, updateState] = useState();
-  const forceUpdate = useCallback(() => updateState({}), []);
-
-  const handleBackData = (newHouseFilters) => {
-    if (newHouseFilters) {
-      setHouseFilters(newHouseFilters);
-      forceUpdate();
-    }
-  };
-
   useEffect(() => {
     housesRequest();
   }, []);
 
+  // Supporting UI
   const ListHeaderComponent = () => {
     return (
       <View>
@@ -87,74 +65,60 @@ export default function HomeScreen({ navigation }) {
               <CustomButton
                 title={"More filters"}
                 onPress={() => {
-                  navigation.navigate("filtersScreen", {
-                    initialHouseFilters: houseFilters,
-                    onGoBack: handleBackData,
-                  });
+                  navigation.navigate("filtersScreen");
                 }}
               />
             }
             style={{}}
           />
 
-          <FilterRow
-            filterTitle={"Monthly rent"}
-            filterChips={[
-              {
-                uneditableText: "From",
-                text: houseFilters[RENT_FEE_MIN].value,
-                onPress: () => {
-                  numPadValueToFilterIndex.current = RENT_FEE_MIN;
-                  setNumPadDialogVisibity(true);
-                },
-              },
-              {
-                uneditableText: "To",
-                text: houseFilters[RENT_FEE_MAX].value,
-                onPress: () => {
-                  numPadValueToFilterIndex.current = RENT_FEE_MAX;
-                  setNumPadDialogVisibity(true);
-                },
-              },
-              {
-                uneditableText: "Exact price",
-                text: "?",
-                backgroundColor: CustomColor.Secondary,
-              },
-            ]}
-          />
-
-          <FilterRow
-            filterTitle={"Location"}
-            filterChips={[
-              {
-                uneditableText: "Lilongwe Area 23",
-                icons: [{ name: "ic_location" }],
-                onPress: () => {
-                  navigation.navigate("locationScreen");
-                },
-              },
-              {
-                icons: [{ name: "ic_add_location" }],
-                backgroundColor: CustomColor.Secondary,
-              },
-            ]}
-          />
-          <FilterRow
-            filterTitle={"Rooms"}
-            filterChips={[
-              { text: "1" },
-              { text: "2" },
-              { text: "3" },
-              { text: "4" },
-              { text: "5" },
-              {
-                uneditableText: "Custom",
-                text: "?",
-                backgroundColor: CustomColor.Secondary,
-              },
-            ]}
-          />
+          {/* Load default filters */}
+          {houseFilters.defaultFilters.map((category, categoryIndex) => {
+            return (
+              <FilterRow
+                key={categoryIndex}
+                filterTitle={category.filterCategory}
+              >
+                {category.filters.map((filterChip, filterChipIndex) => {
+                  return (
+                    <CustomChip
+                      style={{
+                        backgroundColor: filterChip.backgroundColor
+                          ? filterChip.backgroundColor
+                          : null,
+                      }}
+                      key={filterChipIndex}
+                      uneditableText={
+                        filterChip.showFilterName ? filterChip.filterName : null
+                      }
+                      text={filterChip.filterValue}
+                      icons={
+                        filterChip.iconName
+                          ? [{ name: filterChip.iconName }]
+                          : null
+                      }
+                      showDialog={filterChip.showDialog}
+                      onPress={
+                        filterChip.onPress
+                          ? () => {
+                              filterChip.onPress(navigation);
+                            }
+                          : null
+                      }
+                      onSubmitData={(data) => {
+                        console.log(
+                          "This is data from the dialog for " +
+                            filterChip.filterName +
+                            " : " +
+                            data
+                        );
+                      }}
+                    />
+                  );
+                })}
+              </FilterRow>
+            );
+          })}
         </View>
       </View>
     );
@@ -180,7 +144,7 @@ export default function HomeScreen({ navigation }) {
             color: CustomColor.OnPrimaryContainer,
           }}
         >
-          {totalHouses} Houses Found
+          {houses.length - 1} Houses Found
         </Text>
         <Icons name={"ic_filter_menu"} color={CustomColor.OnPrimaryContainer} />
       </View>
@@ -190,26 +154,6 @@ export default function HomeScreen({ navigation }) {
   return (
     <View style={{ backgroundColor: CustomColor.OnPrimary }}>
       <StatusBar backgroundColor={CustomColor.Primary} />
-
-      <CustomDialog
-        visible={numPadDialogVisibity}
-        contentComponent={
-          <KeypadDialogContent
-            initialValue={houseFilters[numPadValueToFilterIndex.current]?.value}
-            inputTitle={
-              houseFilters[numPadValueToFilterIndex.current]?.leadText
-            }
-            onDonePress={(numPadValue) => {
-              setNumPadDialogVisibity(false);
-              setHouseFilters((oldHouseFilters) => {
-                oldHouseFilters[numPadValueToFilterIndex.current].value =
-                  numPadValue;
-                return oldHouseFilters;
-              });
-            }}
-          />
-        }
-      />
 
       <FlatList
         data={houses}
